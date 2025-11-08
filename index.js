@@ -1,6 +1,10 @@
 require('dotenv').config(); // Permet de lire le fichier .env
 const { Client, GatewayIntentBits } = require('discord.js');
+const express = require('express'); // Nouveau : serveur HTTP pour Render
 
+// --------------------
+// Setup du bot Discord
+// --------------------
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -20,31 +24,35 @@ client.on('messageCreate', msg => {
 
   const content = msg.content.toLowerCase();
 
-  // Commande !Gypsy
   if (content === '!gypsy') {
     msg.reply('Crew ! 🔥🤠');
-  }
-
-  // Commande !tiktok
-  else if (content === '!tiktok') {
+  } else if (content === '!tiktok') {
     msg.reply('Voici le TikTok : https://www.tiktok.com/@gypsy_crew63?_t=ZN-8vUnAUx1VNW&_r=1');
-  }
-
-  // Commande !help
-  else if (content === '!help') {
+  } else if (content === '!help') {
     msg.reply(
       "**Commandes disponibles :**\n" +
       "!Gypsy → Répond Crew ! 🔥🤠\n" +
       "!tiktok → Donne le TikTok officiel\n" +
       "!help → Liste toutes les commandes"
     );
-  }
-
-  // Réponse automatique si quelqu'un dit "gypsy crew"
-  else if (content.includes('gypsy crew')) {
+  } else if (content.includes('gypsy crew')) {
     msg.reply('Gypsy Crews sont les meilleurs Pirates des Terres de Sea Of Thieves ! 🏴‍☠️');
   }
 });
 
 // Connexion du bot avec le token sécurisé
 client.login(process.env.TOKEN);
+
+// --------------------
+// Serveur HTTP pour Render
+// --------------------
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Bot Gypsy en ligne ! 🚀');
+});
+
+app.listen(port, () => {
+  console.log(`🌐 Serveur HTTP actif sur le port ${port}`);
+});
